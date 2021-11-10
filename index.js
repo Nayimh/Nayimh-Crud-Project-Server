@@ -19,6 +19,24 @@ async function run() {
         await client.connect();
         const database = client.db('uniqueCars');
         const carsCollection = database.collection('cars');
+        const exploreCollection = database.collection('exploreCars');
+
+        // get cars api
+        app.get("/cars", async (req, res) => {
+            const cursor = carsCollection.find({});
+            const cars = await cursor.toArray();
+            res.send(cars);
+          });
+
+        // get cars api
+        app.get("/exploreCars", async (req, res) => {
+            const cursor = exploreCollection.find({});
+            const cars = await cursor.toArray();
+            res.send(cars);
+        })
+        
+        
+
         
         // post cars api
         app.get('/cars', async (req, res)=>{
