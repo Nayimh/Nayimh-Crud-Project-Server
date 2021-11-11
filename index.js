@@ -21,6 +21,7 @@ async function run() {
         
         const exploreCollection = database.collection('exploreCars');
         const reviewCollection = database.collection('reviews');
+        
         const orderCollection = database.collection('Orders');
 
        
@@ -69,7 +70,23 @@ async function run() {
             const orders = await cursor.toArray();
             res.json(orders);
         })
-    
+        
+          // Orders API with Email - GET
+    app.get("/orders/:email", async (req, res) => {
+        const email = req.params.email;
+        const cursor = orderCollection.find({});
+        const orders = await cursor.toArray();
+        const customerOrder = orders.filter((mail) => mail.email === email);
+        res.send(customerOrder);
+    });
+        
+     // Delete Specific Order API
+     app.delete("/orders/:id", async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) };
+        const deleteOrder = await orderCollection.deleteOne(query);
+        res.json(deleteOrder);
+      });
                 
        
         
