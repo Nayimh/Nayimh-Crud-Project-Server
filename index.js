@@ -18,44 +18,57 @@ async function run() {
     try {
         await client.connect();
         const database = client.db('uniqueCars');
-        const carsCollection = database.collection('cars');
+        
         const exploreCollection = database.collection('exploreCars');
+        const reviewCollection = database.collection('Reviews');
+        const orderCollection = database.collection('Orders');
 
-        // get cars api
-        app.get("/cars", async (req, res) => {
-            const cursor = carsCollection.find({});
-            const cars = await cursor.toArray();
-            res.send(cars);
-          });
+       
 
+        // explore cars
         // get cars api
         app.get("/exploreCars", async (req, res) => {
             const cursor = exploreCollection.find({});
             const cars = await cursor.toArray();
             res.send(cars);
         })
-        
-        
 
-        
-        // post cars api
-        app.get('/cars', async (req, res)=>{
-            const doc = {
-                title: "Record of a Shriveled Datum",
-                content: "No bytes, no problem. Just insert a document, in MongoDB",
-            }
-            const result = await carsCollection.insertOne(doc)
+        // get single card api
             
-            // res.json(result, "running");
-        })
+        app.get("/exploreCars/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const car = await exploreCollection.findOne(query);
+            res.send(car);
+        });
+
+        // review cars
+         // GET REVIEWS - API
+         app.get("/reviews", async (req, res) => {
+            const cursor = reviewCollection.find({});
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        });
+            
+            // order cars
+      
+          // POST ORDERS - API
+        app.post("/orders", async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            res.json(result);
+        });
+    
+                
+       
         
         
-    }
+        }
     finally {
         // await client.close();
     }
 
-}
+    }
 run().catch(console.dir);
 
 
@@ -67,5 +80,3 @@ app.listen(port, () => {
     console.log('listning to port', port)
 })
 
-// UniquifyCar
-// LNR6aj9lLpDKRRFL
