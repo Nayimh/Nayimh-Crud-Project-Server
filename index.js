@@ -21,9 +21,8 @@ async function run() {
         
         const exploreCollection = database.collection('exploreCars');
         const reviewCollection = database.collection('reviews');
-        
         const orderCollection = database.collection('Orders');
-
+        const usersCollection = database.collection('users');
        
 
         // explore cars
@@ -43,6 +42,13 @@ async function run() {
             res.send(car);
         });
 
+        // post car api
+        app.post("/exploreCars", async (req, res) => {
+            const car = req.body;
+            const result = await exploreCollection.insertOne(car);
+            res.json(result);
+        })
+
         // review cars
          // GET REVIEWS - API
          app.get("/reviews", async (req, res) => {
@@ -52,7 +58,11 @@ async function run() {
         });
 
         // post review to ui
-
+        app.post("/reviews", async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
+            res.json(result);
+        })
 
             
             // order cars
@@ -87,7 +97,13 @@ async function run() {
         const deleteOrder = await orderCollection.deleteOne(query);
         res.json(deleteOrder);
       });
-                
+                // user collection api start
+        // post user
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.json(result);
+        })
        
         
         
