@@ -33,6 +33,13 @@ async function run() {
             res.send(cars);
         })
 
+        app.delete("/exploreCars/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const deleteCar = await exploreCollection.deleteOne(query);
+            res.json(deleteCar);
+          });
+
         // get single card api
             
         app.get("/exploreCars/:id", async (req, res) => {
@@ -96,7 +103,11 @@ async function run() {
         const query = { _id: ObjectId(id) };
         const deleteOrder = await orderCollection.deleteOne(query);
         res.json(deleteOrder);
-      });
+     });
+        
+    // 
+        
+        
                 // user collection api start
         // post user
         app.post('/users', async (req, res) => {
