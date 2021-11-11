@@ -20,7 +20,7 @@ async function run() {
         const database = client.db('uniqueCars');
         
         const exploreCollection = database.collection('exploreCars');
-        const reviewCollection = database.collection('Reviews');
+        const reviewCollection = database.collection('reviews');
         const orderCollection = database.collection('Orders');
 
        
@@ -28,7 +28,7 @@ async function run() {
         // explore cars
         // get cars api
         app.get("/exploreCars", async (req, res) => {
-            const cursor = exploreCollection.find({});
+            const cursor =  exploreCollection.find({});
             const cars = await cursor.toArray();
             res.send(cars);
         })
@@ -49,6 +49,10 @@ async function run() {
             const reviews = await cursor.toArray();
             res.send(reviews);
         });
+
+        // post review to ui
+
+
             
             // order cars
       
@@ -58,6 +62,13 @@ async function run() {
             const result = await orderCollection.insertOne(order);
             res.json(result);
         });
+
+        // get all orders
+        app.get("/orders", async (req, res) => {
+            const cursor = orderCollection.find({});
+            const orders = await cursor.toArray();
+            res.json(orders);
+        })
     
                 
        
